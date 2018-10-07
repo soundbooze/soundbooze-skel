@@ -1,0 +1,16 @@
+AM_CFLAGS = --pedantic -Wall -std=c99 -O2
+AM_LDFLAGS = -lm
+
+BIN = src/main
+SRC = src/main.c
+
+all: main
+
+main: $(SRC)
+	$(CC) $(AM_CFLAGS) $(AM_LDFLAGS) $(SRC) -o $(BIN)
+
+hello: $(HS)
+	$(CC) $(AM_CFLAGS) $(AM_LDFLAGS) $(HS) -o $(HB)
+
+clean: 
+	/bin/rm -rf src/main configure config.status config.log Makefile autom4te.cache/
