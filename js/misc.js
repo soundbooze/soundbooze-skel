@@ -1,7 +1,5 @@
 
-/*
-
-  // one liners
+ // one liners
 
   Math.min(...arr);
   Math.max(...arr);
@@ -154,6 +152,3 @@
   });
 
   console.log(hist);
-
-*/
-
