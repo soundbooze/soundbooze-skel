@@ -4,6 +4,8 @@
   Math.min(...arr);
   Math.max(...arr);
 
+  // sum
+
   sum = arr.reduce((previous, current) => current += previous);
   var ssum = arr1.reduce(function(a, b){return a+b;});
 
