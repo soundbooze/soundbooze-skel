@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>UDUK Pi</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+	body {
+		font-family: Monospace;
+		background-color: #000;
+		margin: 0px;
+		overflow: hidden;
+	}
+
+	#info {
+		position: absolute;
+		top: 0px;
+		width: 100%;
+		padding: 5px;
+		font-family:Monospace;
+		font-size:13px;
+		text-align:center;
+		color: #ffffff;
+	}
+
+	a {
+		color: #ffffff;
+	}
+	</style>
+</head>
+
+<body>
+
+	<div id="container"></div>
+
+	<script src="js/three.min.js"></script>
+	<script src="js/TrackballControls.js"></script>
+	<script src="js/dat.gui.min.js"></script>
+	<script src="js/GPUParticleSystem.js"></script>
+  <script src="js/meyda.js"></script>
+  <script src="js/chroma.min.js"></script>
+
+	<script>
+
+		var camera, tick = 0,
+			scene, renderer, clock = new THREE.Clock(),
+			controls, container, gui = new dat.GUI( { width: 300 } ),
+			options, spawnerOptions, particleSystem;
+
+    var audioctx;
+    var source, analyser, waveform;
+
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+
+    navigator.getUserMedia({audio: true}, function(stream) {
+      source = audioctx.createMediaStreamSource(stream);
+      analyser = audioctx.createAnalyser();
+      analyser.smoothingTimeConstant = 0;
+      source.connect(analyser);
+    }, function(e) {});
+
+    window.onload = function() {
+      audioctx = new window.AudioContext();
+    };
+
+		init();
+		animate();
+
+		function init() {
+
+			container = document.getElementById('container');
+
+			camera = new THREE.PerspectiveCamera(28, window.innerWidth / window.innerHeight, 1, 10000);
+			camera.position.z = 300;
+
+			scene = new THREE.Scene();
+
+			particleSystem = new THREE.GPUParticleSystem( {
+				maxParticles: 350000
+			} );
+
+			scene.add( particleSystem );
+
+			options = {
+				position: new THREE.Vector3(),
+				positionRandomness: .3,
+				velocity: new THREE.Vector3(),
+				velocityRandomness: .5,
+				color: 0xdd11aa,
+				colorRandomness: .2,
+				turbulence: .5,
+				lifetime: 2,
+				size: 13,
+				sizeRandomness: 1
+			};
+
+			spawnerOptions = {
+				spawnRate: 15000,
+				horizontalSpeed: 1.5,
+				verticalSpeed: 1.33,
+				timeScale: 1
+			};
+
+			//
+
+			gui.add( options, "velocityRandomness", 0, 3 );
+			gui.add( options, "positionRandomness", 0, 3 );
+			gui.add( options, "size", 1, 20 );
+			gui.add( options, "sizeRandomness", 0, 25 );
+			gui.add( options, "colorRandomness", 0, 1 );
+			gui.add( options, "lifetime", .1, 10 );
+			gui.add( options, "turbulence", 0, 1 );
+
+			gui.add( spawnerOptions, "spawnRate", 10, 30000 );
+			gui.add( spawnerOptions, "timeScale", - 1, 1 );
+
+			//
+
+			renderer = new THREE.WebGLRenderer();
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			container.appendChild( renderer.domElement );
+
+			//
+
+			controls = new THREE.TrackballControls( camera, renderer.domElement );
+			controls.rotateSpeed = 5.0;
+			controls.zoomSpeed = 2.2;
+			controls.panSpeed = 1;
+			controls.dynamicDampingFactor = 0.3;
+
+			window.addEventListener( 'resize', onWindowResize, false );
+
+		}
+
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+		}
+
+    function extractAudio() {
+      waveform = new Float32Array(analyser.fftSize);
+		  analyser.getFloatTimeDomainData(waveform);
+    }
+
+		function animate() {
+
+			requestAnimationFrame(animate);
+			controls.update();
+      extractAudio();
+
+			var delta = clock.getDelta() * spawnerOptions.timeScale;
+			tick += delta;
+
+			if ( tick < 0 ) tick = 0;
+
+			if ( delta > 0 ) {
+
+        var e = Meyda.extract('energy', waveform);
+        var spectralSlope = Meyda.extract('spectralSlope', waveform);
+        var spectralSkewness = Meyda.extract('spectralSkewness', waveform);
+        var spectralKurtosis = Meyda.extract('spectralKurtosis', waveform);
+
+        var scale = chroma.scale([0x110000, 0xbb11dd, 0xdd11aa, 0xddeeaa]);
+        var color = scale(e/1000).hex();
+        options.color = color;
+
+        //options.lifetime = e;
+
+        if (e > 20) {
+          options.timeScale = -1;
+        }
+        else  {
+          options.timeScale = 1;
+        }
+
+				options.position.x = Math.abs(spectralKurtosis) - e;
+				options.position.y = options.position.x - e;
+				options.position.z = 0;
+
+				for ( var x = 0; x < spawnerOptions.spawnRate * delta; x ++ ) {
+					particleSystem.spawnParticle( options );
+				}
+
+			}
+
+			particleSystem.update(tick);
+			render();
+
+		}
+
+		function render() {
+			renderer.render(scene, camera);
+		}
+
+     </script>
+  </body>
+
+</html>
