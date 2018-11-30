@@ -1,0 +1,23 @@
+// gcc foo.c -o foo -std=c99 -linasm
+
+#include <stdio.h>
+#include <Array.h> // *-- check duplicate
+
+#define SIZE 4
+
+int 
+main (void)
+{
+  float a[SIZE] = {1.0, 2.0, 3.0, 4.0};
+  float b[SIZE] = {5.0, 6.0, 7.0, 8.0};
+
+  flt32_t  c = Array_SumMul_flt32 (a, b, SIZE);
+  Array_MulVector_flt32 (a, b, SIZE);
+
+  for (int i = 0; i < SIZE; i++) {
+    printf("%f\n", a[i]);
+  }
+
+  printf ("The convolution of two arrays is = %f\n", c); 
+  return 0;
+}

@@ -1,0 +1,1 @@
+./read hdfs://localhost:9000/tmp/testfile.txt 14 14
