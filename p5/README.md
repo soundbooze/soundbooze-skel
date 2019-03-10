@@ -9,5 +9,5 @@
 TODO:
 
 #### Accuracy:
--  thresholdFinderOptimum.... <?> findTrash collectGarbage
+-  thresholdOptimumFinder().... <?> findTrash collectGarbage
 - thresholded-spectrogram <cross-check>
