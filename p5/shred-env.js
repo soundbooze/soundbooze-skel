@@ -33,8 +33,8 @@ function zMax8(z) {
 }
 
 function e(buffer) {
-    var attackTime =  0.0002;
-    var releaseTime =  0.0004;
+    var attackTime =  0.000002; //tuning
+    var releaseTime =  0.00004;  //tuning
     var gainAttack ;
     var gainRelease;
     var envelopeOut = 0.0;
