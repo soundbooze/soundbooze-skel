@@ -94,6 +94,7 @@ function draw() {
 	
 	var t1 = r8MaxSum/19;
 
+	// todo: scaler
 	var er = e(fft.waveform()); //peak - ts -  = shred
 	for(var j = 0; j < er.length; j++) {
 		push();
