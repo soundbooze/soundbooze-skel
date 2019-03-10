@@ -3,7 +3,7 @@ let amp;
 let fft;
 
 var hWindow;
-var BENDING = 620.6;  
+var BENDING = 649.0;  
 
 function nuttall(N) {
   var TWOPI = Math.PI * 2;
@@ -32,7 +32,7 @@ function zMax8(z) {
 	}
 	return ret;
 }
-
+  
 function zMin8(z) {
 	var zs = z.slice(0);
 	var s = zs.sort();
@@ -99,7 +99,7 @@ function draw() {
 	
   let bins = fft.analyze();
 	
-	var windowed = new Float32Array(bins.length);
+  var windowed = new Float32Array(bins.length);
 	
   for (var i = 0; i < hWindow.length; i++) {
     windowed[i] = bins[i] * hWindow[i];    
@@ -112,7 +112,7 @@ function draw() {
 	for (var j = 0; j < windowed.length; j++) {  
 		stroke(222, 222, 0);
 		line(j, height, j, height-windowed[j]);
-  }
+        }
 
 	stroke(177);
 	fill(177);
@@ -125,12 +125,16 @@ function draw() {
 	if (r8MaxSum >= BENDING)
 		text('[Bending]', 44, 88);
 	
-  r8Std = standardDeviation(r8Max);
+        r8Std = standardDeviation(r8Max);
 	text(r8Std, 20, 40);
 	
 	shredCoeff.push(r8Std);
 	shredStd = standardDeviation(shredCoeff);
 	text(shredStd, 20, 60);
+	
+	var maxSC = (Math.max(...shredCoeff));
+	if (maxSC > 6.0 && shredStd > 1.8 && r8Std > 4.1)
+		line(shredCounter, 100, shredCounter, 180);
 	
 	shredCounter++;
 	if (shredCounter > width) {
@@ -140,11 +144,11 @@ function draw() {
 	
 	push();
 	strokeWeight(1);
-  beginShape(POINTS);
+        beginShape(POINTS);
 	  for (var z = 0; z < shredCoeff.length; z++) {
-      vertex(z, shredCoeff[z] + 123);
-		}
-  endShape();
+            vertex(z, shredCoeff[z] + 123);
+	  }
+        endShape();
 	pop();
 	
 }
