@@ -3,3 +3,9 @@
 - Monophonic only
 - no noise
 - trigger-event -> ....
+
+TODO:
+
+#### Accuracy:
+-  thresholdFinderOptimum.... <?> findTrash collectGarbage
+- thresholded-spectrogram <cross-check>
