@@ -60,8 +60,7 @@ function draw() {
 	var r8Max = zMax8(windowed);
 	var r8MaxSum = 0;
 
-	stroke(177);
-	fill(177);
+	stroke(r8Max[8]);
 	for (var k = 0; k < r8Max.length; k++) {
 	  r8MaxSum += r8Max[k];
 		stroke(35+r8MaxSum/11);
@@ -78,6 +77,7 @@ function draw() {
       }
     }
     img.updatePixels();
+	  //img.filter("threshold",0.50515);
     image(img, 0, 20+counter);
   pop();
 	
