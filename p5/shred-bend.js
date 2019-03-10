@@ -89,8 +89,8 @@ function setup() {
 	console.clear();
 }
 
-var shredCoeff = [];
 var shredCounter = 0;
+var shredCoeff = [];
 var shredStd = 0;
 
 function draw() {
@@ -112,15 +112,6 @@ function draw() {
 		line(j, height, j, height-windowed[j]);
   }
 
-	shredStd = standardDeviation(r8Max);
-	shredCoeff.push(shredStd);
-	shredCounter++;
-	if (shredCounter > width) {
-		shredCoeff = [];
-	  shredCounter = 0;
-		shredStd = 0;
-	}
-	
 	stroke(177);
 	fill(177);
 	for (var k = 0; k < r8Max.length; k++) {
@@ -130,5 +121,25 @@ function draw() {
 	
 	text(r8MaxSum, 20, 20);
 	if (r8MaxSum >= BENDING)
-		text('[Bending]', 40, 40);
+		text('[Bending]', 40, 70);
+	
+  shredStd = standardDeviation(r8Max);
+	shredCoeff.push(shredStd);
+	shredCounter++;
+	if (shredCounter > width) {
+		shredCounter = 0;
+		shredCoeff = [];
+		shredStd = 0;
+	}
+	text(shredStd, 20, 40);
+	
+	push();
+	strokeWeight(1);
+  beginShape(POINTS);
+	  for (var z = 0; z < shredCoeff.length; z++) {
+      vertex(z, shredCoeff[z]+ 100);
+		}
+  endShape();
+	pop();
+	
 }
