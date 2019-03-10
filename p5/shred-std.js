@@ -3,7 +3,7 @@ let amp;
 let fft;
 
 var hWindow;
-var BENDING = 560.3; // avg'ed ...
+var BENDING = 620.6;  
 
 function nuttall(N) {
   var TWOPI = Math.PI * 2;
@@ -107,6 +107,8 @@ function draw() {
 	
 	var r8Max = zMax8(windowed);
 	var r8MaxSum = 0;
+	var r8Std = 0;
+	
 	for (var j = 0; j < windowed.length; j++) {  
 		stroke(222, 222, 0);
 		line(j, height, j, height-windowed[j]);
@@ -121,23 +123,26 @@ function draw() {
 	
 	text(r8MaxSum, 20, 20);
 	if (r8MaxSum >= BENDING)
-		text('[Bending]', 40, 70);
+		text('[Bending]', 44, 88);
 	
-  shredStd = standardDeviation(r8Max);
-	shredCoeff.push(shredStd);
+  r8Std = standardDeviation(r8Max);
+	text(r8Std, 20, 40);
+	
+	shredCoeff.push(r8Std);
+	shredStd = standardDeviation(shredCoeff);
+	text(shredStd, 20, 60);
+	
 	shredCounter++;
 	if (shredCounter > width) {
 		shredCounter = 0;
 		shredCoeff = [];
-		shredStd = 0;
 	}
-	text(shredStd, 20, 40);
 	
 	push();
 	strokeWeight(1);
   beginShape(POINTS);
 	  for (var z = 0; z < shredCoeff.length; z++) {
-      vertex(z, shredCoeff[z]+ 100);
+      vertex(z, shredCoeff[z] + 123);
 		}
   endShape();
 	pop();
