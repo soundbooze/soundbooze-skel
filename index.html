@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Under Development</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+    <script>
+
+    //
+    //* reversed to .mid
+    // fitting-curve
+
+    var WIDTH = 1920;
+    var HEIGHT = 1080;
+    var START_NOTE = 29;
+    var BAR_SIZE = 20;
+
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
+
+    function fibonacci(num) {
+      if (num <= 1) return 1;
+      return fibonacci(num - 1) + fibonacci(num - 2);
+    }
+
+    function setup() {
+      createCanvas(WIDTH, HEIGHT);
+      background(0);
+      grid(BAR_SIZE);
+      roll();
+
+      frameRate(10);
+
+      // procedural
+      /*
+      for (var i = 0; i < 64; i++) {
+        note(getRandomInt(36,57), 0+i, 4+i);
+        note(getRandomInt(36,57), 2+i, 4+i);
+      }
+      */
+
+      // recursive
+      /*
+      for (var i = 0; i < 4; i++) {
+        note(getRandomInt(36,57), fibonacci(i), 2+i);
+      }
+      */
+
+    }
+
+    function grid(res) {
+      push();
+      stroke(92);
+      for (var i = 0; i < WIDTH; i+=res) {
+        line(i, 0, i, HEIGHT);
+      }
+      pop();
+    }
+
+    function roll() {
+      push();
+      strokeWeight(4);
+      fill(210);
+      for (var i = 0; i < 37; i++) {
+        rect(0, (i * BAR_SIZE), BAR_SIZE, BAR_SIZE);
+      }
+      stroke(8);
+      for (var i = 0; i < 38; i++) {
+        text(i+START_NOTE, 3, (i * BAR_SIZE)-5);
+      }
+      pop();
+    }
+
+    function note(n, on, off) {
+      push();
+      stroke(254-(n*2),n*4,n*2);
+      fill(254-(n*2),n*4,n*2);
+      rect(BAR_SIZE + (BAR_SIZE * on), BAR_SIZE * (n - (START_NOTE+1)), BAR_SIZE*(off-on), BAR_SIZE);
+      pop();
+    }
+
+    function draw() {
+      background(0);
+      grid(BAR_SIZE);roll();
+
+      for (var i = 0; i < 8; i++) {
+        note(getRandomInt(36,57), 0+i, 4+i);
+        note(getRandomInt(36,57), 2+i, 4+i);
+      }
+
+      for (var i = 0; i < 4; i++) {
+        note(getRandomInt(36,57), 14+fibonacci(i), 14+2+i);
+      }
+    }
+
+    </script>
+  </head>
+  <body style="overflow:hidden;" bgcolor="#000">
+
+  </body>
+</html>
