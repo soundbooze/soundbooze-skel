@@ -1,6 +1,7 @@
 Misc
 
 - http://www.ifs.tuwien.ac.at/~schindler/lectures/MIR_Feature_Extraction.html
+- http://ifs.tuwien.ac.at/mir/audiofeatureextraction.html
 - https://www.audiolabs-erlangen.de/resources/MIR/FMP/C0/C0.html
 - https://github.com/xdsopl/spectrum
 - http://www.academia.edu/5379892/AN_INTRODUCTION_TO_THE_FEATURES_EXTRACTED_FROM_THE_AUDIO_SIGNAL
