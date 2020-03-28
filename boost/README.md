@@ -1,1 +1,1 @@
-apt-get install lv2-c++-tools
+(clean) naive stereo booster via lv2
