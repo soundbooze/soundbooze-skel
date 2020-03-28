@@ -1,0 +1,37 @@
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+
+<http://ll-plugins.nongnu.org/lv2/lv2pftci/stereodump>
+  a lv2:Plugin;
+  lv2:binary <stereodump.so>;
+  doap:name "Stereo dump";
+  doap:license <http://usefulinc.com/doap/licenses/gpl>;
+
+  lv2:port 
+  [
+    a lv2:AudioPort, lv2:InputPort;
+    lv2:index 0;
+    lv2:symbol "left_input";
+    lv2:name "Left input";
+  ],
+
+  [
+    a lv2:AudioPort, lv2:InputPort;
+    lv2:index 1;
+    lv2:symbol "right_input";
+    lv2:name "Right input";
+  ],
+
+  [
+    a lv2:AudioPort, lv2:OutputPort;
+    lv2:index 2;
+    lv2:symbol "left_output";
+    lv2:name "Left output";
+  ],
+
+  [
+    a lv2:AudioPort, lv2:OutputPort;
+    lv2:index 3;
+    lv2:symbol "right_output";
+    lv2:name "Right output";
+  ].
