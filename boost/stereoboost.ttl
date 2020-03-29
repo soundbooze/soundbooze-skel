@@ -9,29 +9,39 @@
 
   lv2:port 
   [
-    a lv2:AudioPort, lv2:InputPort;
+    a lv2:ControlPort, lv2:InputPort;
     lv2:index 0;
+    lv2:symbol "boost";
+    lv2:name "Boost";
+    lv2:minimum 1;
+    lv2:maximum 20;
+    lv2:default 10;
+  ],
+
+  [
+    a lv2:AudioPort, lv2:InputPort;
+    lv2:index 1;
     lv2:symbol "left_input";
     lv2:name "Left input";
   ],
 
   [
     a lv2:AudioPort, lv2:InputPort;
-    lv2:index 1;
+    lv2:index 2;
     lv2:symbol "right_input";
     lv2:name "Right input";
   ],
 
   [
     a lv2:AudioPort, lv2:OutputPort;
-    lv2:index 2;
+    lv2:index 3;
     lv2:symbol "left_output";
     lv2:name "Left output";
   ],
 
   [
     a lv2:AudioPort, lv2:OutputPort;
-    lv2:index 3;
+    lv2:index 4;
     lv2:symbol "right_output";
     lv2:name "Right output";
   ].
